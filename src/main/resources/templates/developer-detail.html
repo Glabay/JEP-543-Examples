@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0b1020">
+    <title th:text="${developer.fullName + ' | Midnight Dashboard'}">
+        Developer | Midnight Dashboard
+    </title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+</head>
+<body>
+<div class="app-shell">
+    <aside class="sidebar">
+        <a class="brand" th:href="@{/}"><span class="brand-mark">M<span>.</span></span><span class="brand-copy"><strong>MIDNIGHT</strong><small>THE MIDNIGHT NETWORK</small></span></a>
+        <div class="sidebar-label">WORKSPACE</div>
+        <nav class="side-nav"><a class="nav-item" th:href="@{/}"><span class="nav-icon">▦</span> Overview</a><a class="nav-item active" th:href="@{/} + '#developer-directory'"><span class="nav-icon">⌘</span> Developers</a></nav>
+        <div class="sidebar-footer"><div class="avatar avatar-small">MC</div><div class="sidebar-user"><strong>Network overview</strong><small>Demo workspace</small></div><span class="more-dots">···</span></div>
+    </aside>
+    <main class="main-content">
+        <header class="topbar"><div class="breadcrumbs"><a th:href="@{/}">Workspace</a><b>/</b><a th:href="@{/} + '#developer-directory'">Developers</a><b>/</b><strong th:text="${developer.getFullName()}">Alex Lee</strong></div><div class="topbar-right"><span class="environment-pill"><i></i> LOCAL DEMO</span></div></header>
+        <section class="page-heading detail-heading">
+            <div><div class="eyebrow">DEVELOPER PROFILE</div><h1 th:text="${developer.getFullName()}">Alex Lee</h1><p class="page-subtitle">A member of The Midnight Network.</p></div>
+            <div class="heading-actions"><a class="button button-secondary" th:href="@{/}">← Back to dashboard</a><a class="button button-primary" th:href="@{|/api/v1/developers/${developer.id}|}" target="_blank" rel="noreferrer">View JSON <span>↗</span></a></div>
+        </section>
+        <section class="profile-layout">
+            <article class="panel profile-card">
+                <div class="profile-avatar" th:classappend="${' avatar-' + (developer.id % 6)}" th:text="${developer.initials}">AL</div>
+                <h2 th:text="${developer.getFullName()}">Alex Lee</h2>
+                <a class="github-link" th:href="${'https://github.com/' + developer.githubUsername}" target="_blank" rel="noreferrer" th:text="${'@' + developer.githubUsername}">@alexlee</a>
+                <span class="level-pill profile-level" th:classappend="${#strings.toLowerCase(developer.level.name())}" th:text="${developer.level.label}">Junior</span>
+                <p class="profile-bio" th:text="${developer.bio == null || developer.bio.isBlank() ? 'No developer summary has been added yet.' : developer.bio}">Building useful things and learning every day.</p>
+                <div class="profile-divider"></div>
+                <div class="profile-info"><span>Email</span><strong th:text="${developer.email}">alex@example.test</strong></div>
+                <div class="profile-info"><span>Team</span><strong th:text="${developer.team.label}">Backend</strong></div>
+                <div class="profile-info"><span>Mentor</span><strong th:text="${developer.mentorName == null ? 'Not assigned' : developer.mentorName}">Morgan Reed</strong></div>
+                <div class="profile-info"><span>Network since</span><strong th:text="${#temporals.format(developer.joinedOn, 'MMM d, yyyy')}">May 12, 2025</strong></div>
+            </article>
+            <div class="profile-main">
+                <article class="panel progress-panel">
+                    <div class="panel-heading"><div><div class="eyebrow">DEVELOPMENT JOURNEY</div><h2>Current progression</h2></div><span class="status-pill" th:classappend="${#strings.toLowerCase(developer.status.name())}" th:text="${developer.status.label}">Active</span></div>
+                    <div class="big-progress"><strong th:text="${developer.progressPercent + '%'}">72%</strong><span>Progress within current level</span></div>
+                    <div class="big-progress-track"><span th:style="|width: ${developer.progressPercent}%|"></span></div>
+                    <div class="progress-scale"><span>Starting out</span><span>Developing</span><span>Ready for next step</span></div>
+                </article>
+                <article class="panel detail-stats">
+                    <div><span>DEVELOPMENT LEVEL</span><strong th:text="${developer.level.label}">Junior</strong></div>
+                    <div><span>EXPERIENCE</span><strong th:text="|${developer.experienceYears.stripTrailingZeros().toPlainString()} years|">1.5 years</strong></div>
+                    <div><span>LAST ACTIVE</span><strong th:text="${#temporals.format(developer.lastActiveAt, 'MMM d, yyyy')}">Oct 30, 2026</strong></div>
+                </article>
+                <article class="panel note-panel"><div class="eyebrow">ABOUT THIS DEMO</div><h2>Progress is a conversation, not a score.</h2><p>The level and progress value are mock tracking fields for this demo. In a real Midnight Network workspace, progression should be reviewed against agreed competencies, project outcomes, and mentor feedback rather than treated as an automatic performance rating.</p></article>
+            </div>
+        </section>
+        <footer class="page-footer"><span>THE MIDNIGHT CODER <b>·</b> THE MIDNIGHT NETWORK</span><span>Built for learning, progression, and community.</span></footer>
+    </main>
+</div>
+</body>
+</html>
